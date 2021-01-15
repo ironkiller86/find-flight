@@ -13,78 +13,104 @@ import config from "./config";
  */
 const App = () => {
   const [loading, setLoading] = useState(false);
-  const [bestFlight, setBestFlight] = useState({
+  const [appData, setAppData] = useState({
     price: "",
     airline: "",
     show: false,
     variant: null,
     airportData: [],
   });
-  const { price, airline, show, variant, airportData } = bestFlight;
+  const { price, airline, show, variant, airportData } = appData;
   /*
    *
    */
   const closeDisplayInfo = () => {
-    setBestFlight({ ...bestFlight, show: false });
+    setAppData({ ...appData, show: false });
   };
-
   /**
-   *
-   * @param {*} param0
+   * trova i dati relativi al volo piu economico
+   * @param {*} departureAirport
+   * @param {*} arrivalAirport
    */
-  const findFlight = async ({ departureAirport, arrivalAirport }) => {
-    console.log("App - findFlight", loading);
-    if (show) {
-      setBestFlight({ ...bestFlight, show: false });
-    }
-    setLoading((loading) => !loading);
+  const getBestFlightData = async (departureAirport, arrivalAirport) => {
     let httpConfig = {
       method: "get",
       url: `${config.url}flights/from/${departureAirport}/to/${arrivalAirport}`,
       headers: { Authorization: `Bearer ${config.token}` },
     };
-    let bestFlightResp = null;
+    let flightsData = null;
     try {
-      bestFlightResp = await axios.request({ ...httpConfig });
+      flightsData = await axios.request({ ...httpConfig });
     } catch (error) {
       console.log(error);
-      setBestFlight({ ...bestFlight, variant: "danger", show: true });
+      setAppData({ ...appData, variant: "danger", show: true });
       setLoading((loading) => !loading);
       return;
     }
-    console.log("App - findFlight", bestFlightResp);
-    const statusCode = bestFlightResp.status;
-    const bestFlightList = bestFlightResp?.data?.data;
-    console.log(bestFlightList);
-    let bestFlightRaw = [];
-    if (bestFlightList.length > 1) {
-      bestFlightRaw = bestFlightList.reduce((prev, curr) =>
+    console.log("App - findFlight", flightsData);
+    const flightsList = flightsData?.data?.data;
+    console.log(flightsList);
+    let bestFlight = null;
+    if (flightsList.length > 1) {
+      bestFlight = flightsList.reduce((prev, curr) =>
         prev.price < curr.price ? prev : curr
       );
     } else {
-      bestFlightRaw = bestFlightList[0];
+      bestFlight = flightsList[0];
     }
-    console.log(bestFlightRaw);
-    httpConfig = {
+    return bestFlight;
+  };
+  /**
+   *   trova il nome delle compagnia aerea che effettua il
+   *   volo piu economico
+   * @param {*} bestFlight
+   */
+  const getAirline = async (bestFlight) => {
+    let httpConfig = {
       method: "get",
       url: `${config.url}airlines/all`,
       headers: { Authorization: `Bearer ${config.token}` },
     };
-    const airlinesListResponse = await axios.request({ ...httpConfig });
+    let airlinesListResponse = null;
+    try {
+      airlinesListResponse = await axios.request({ ...httpConfig });
+    } catch (error) {
+      console.log(error);
+      setAppData({ ...appData, variant: "danger", show: true });
+      return;
+    }
     console.log(airlinesListResponse);
     const airlinesList = airlinesListResponse?.data?.data;
     console.log(">>>>>>>>>>>>>>>>>>>>>>>>", airlinesList);
     const airlineObj = airlinesList.find(
-      (airline) => airline.id === bestFlightRaw.airlineId
+      (airline) => airline.id === bestFlight.airlineId
     );
     console.log("airlineObj", airlineObj);
-    let definitiveBestFlight = {
-      airline: airlineObj.name,
-      price: bestFlightRaw.price,
-      variant: "dark",
-      show: true,
-    };
-    setBestFlight({ ...bestFlight, ...definitiveBestFlight });
+    return airlineObj;
+  };
+  /*
+   * trova il volo piu economico
+   */
+  const findFlight = async ({ departureAirport, arrivalAirport }) => {
+    console.log("App - findFlight", loading);
+    if (show) {
+      setAppData({ ...appData, show: false });
+    }
+    setLoading((loading) => !loading);
+    const bestFlight = await getBestFlightData(
+      departureAirport,
+      arrivalAirport
+    );
+    const airline = await getAirline(bestFlight);
+    if (airline) {
+      let finalData = {
+        airline: airline.name,
+        price: bestFlight.price,
+        variant: "dark",
+        show: true,
+      };
+      setAppData({ ...appData, ...finalData });
+    }
     setLoading((loading) => !loading);
   };
   /*
@@ -97,10 +123,10 @@ const App = () => {
    *
    */
   useEffect(() => {
-    console.log("App - useEffect miglior volo", bestFlight);
-  }, [bestFlight]);
+    console.log("App - useEffect miglior volo", appData);
+  }, [appData]);
   /*
-   *
+   * fetch IATA Airport
    */
   useEffect(() => {
     const getAirport = async () => {
@@ -114,11 +140,11 @@ const App = () => {
       try {
         httpResp = await axios.request({ ...httpConfig });
         let airportListObj = httpResp?.data?.data;
-        setBestFlight({ ...bestFlight, airportData: [...airportListObj] });
+        setAppData({ ...appData, airportData: [...airportListObj] });
         setLoading((loading) => !loading);
       } catch (error) {
         console.log(error);
-        setBestFlight({ ...bestFlight, variant: "danger", show: true });
+        setAppData({ ...appData, variant: "danger", show: true });
         setLoading((loading) => !loading);
         return;
       }
@@ -128,7 +154,9 @@ const App = () => {
     };
     wrapper();
   }, []);
-
+  /**
+   *
+   */
   return (
     <div className="App">
       <SetFlightsForm
@@ -137,13 +165,12 @@ const App = () => {
         findFlight={findFlight}
         closeDisplayInfo={closeDisplayInfo}
       />
-
       {show ? (
         <DisplayInfo
           variant={variant}
           price={price}
           airline={airline}
-          errorMsg=" Sorry an Error happened"
+          errorMsg="Sorry, something went wrong..."
         />
       ) : null}
 

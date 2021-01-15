@@ -1,4 +1,10 @@
 import { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPlaneArrival,
+  faPlaneDeparture,
+} from "@fortawesome/free-solid-svg-icons";
+
 /*
  * Local styles import
  */
@@ -66,68 +72,86 @@ const SetFlightForm = ({ findFlight, airportData, closeDisplayInfo }) => {
           <Form
             onSubmit={handlerSubmit}
             className="border border-secondary 
-            bg-primary rounded  py-5"
+            bg-primary rounded py-5"
           >
-            <Row>
-              <Col xs={3} md={2} />
-              <Col xs={6} md={8}>
-                <Form.Control
-                  onChange={handlerFormFields}
-                  className="text-center"
-                  required
-                  name="departureAirport"
-                  as="select"
-                  value={departureAirport}
-                >
-                  <option value={""}>
-                    Select 'Departure airport IATA code
-                  </option>
-                  {airportData.map((airport) => {
-                    return (
-                      <option
-                        defaultValue={departureAirport}
-                        className="text-center"
-                        key={airport.id}
-                        value={airport.codeIata}
-                      >
-                        {airport.codeIata}
-                      </option>
-                    );
-                  })}
-                </Form.Control>
+            <Row className="align-items-center">
+              <Col xs={2} md={2} sm={2} lg={2} xl={2}>
+                <FontAwesomeIcon
+                  className="ml-1"
+                  size={"1x"}
+                  color="white"
+                  icon={faPlaneDeparture}
+                />
               </Col>
-              <Col xs={3} md={2} />
+              <Col xs={8} sm={8} md={8} lg={8} xl={8}>
+                <Row>
+                  <Form.Control
+                    onChange={handlerFormFields}
+                    className="text-center"
+                    required
+                    name="departureAirport"
+                    as="select"
+                    value={departureAirport}
+                  >
+                    <option value={""}>
+                      Select 'Departure airport IATA code
+                    </option>
+                    {airportData.map((airport) => {
+                      return (
+                        <option
+                          defaultValue={departureAirport}
+                          className="text-center"
+                          key={airport.id}
+                          value={airport.codeIata}
+                        >
+                          {airport.codeIata}
+                        </option>
+                      );
+                    })}
+                  </Form.Control>
+                </Row>
+              </Col>
+              <Col xs={2} sm={2} md={2} lg={2} xl={2} />
             </Row>
             <Row style={{ height: "40px" }} />
-            <Row>
-              <Col xs={3} md={2} />
-              <Col xs={6} md={8}>
-                <Form.Control
-                  onChange={handlerFormFields}
-                  className="text-center"
-                  required
-                  name="arrivalAirport"
-                  as="select"
-                  value={arrivalAirport}
-                >
-                  <option value={""}>Select 'Arrival airport IATA code</option>
-                  {airportData.map((airport) => {
-                    return (
-                      <option
-                        className="text-center"
-                        key={airport.id}
-                        value={airport.codeIata}
-                      >
-                        {airport.codeIata}
-                      </option>
-                    );
-                  })}
-                </Form.Control>
+            <Row className="align-items-center">
+              <Col xs={2} md={2} sm={2} lg={2} xl={2}>
+                <FontAwesomeIcon
+                  className="ml-1"
+                  size={"1x"}
+                  color="white"
+                  icon={faPlaneArrival}
+                />
               </Col>
-              <Col xs={3} md={2} />
+              <Col xs={8} sm={8} md={8} lg={8} xl={8}>
+                <Row>
+                  <Form.Control
+                    onChange={handlerFormFields}
+                    className="text-center"
+                    required
+                    name="arrivalAirport"
+                    as="select"
+                    value={arrivalAirport}
+                  >
+                    <option value={""}>Select Arrival airport IATA code</option>
+                    {airportData.map((airport) => {
+                      return (
+                        <option
+                          className="text-center"
+                          key={airport.id}
+                          value={airport.codeIata}
+                        >
+                          {airport.codeIata}
+                        </option>
+                      );
+                    })}
+                  </Form.Control>
+                </Row>
+              </Col>
+
+              <Col xs={2} sm={2} md={2} lg={2} xl={2} />
             </Row>
-            <Row style={{ height: "20px" }} />
-            <Row style={{ height: "40px" }} />
+            <Row style={{ height: "80px" }} />
             <Row>
               <Col xs={3} md={2} />
               <Col xs={6} md={8}>
