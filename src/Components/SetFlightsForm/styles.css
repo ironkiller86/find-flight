@@ -1,3 +1,6 @@
 #mainFormContainer {
-    margin-top:  10%;
+  margin-top: 10%;
+}
+form {
+  opacity: 0.96;
 }
