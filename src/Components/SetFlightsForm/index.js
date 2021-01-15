@@ -67,8 +67,8 @@ const SetFlightForm = ({ findFlight, airportData, closeDisplayInfo }) => {
   return (
     <div className="mainFormContainer">
       <Row>
-        <Col xs={2} sm={2} md={3} lg={4} />
-        <Col xs={8} sm={8} md={6} lg={4}>
+        <Col xs={1} sm={2} md={3} lg={4} xl={3} />
+        <Col xs={10} sm={8} md={6} lg={4} xl={6}>
           <Form
             onSubmit={handlerSubmit}
             className="border border-secondary 
@@ -77,7 +77,7 @@ const SetFlightForm = ({ findFlight, airportData, closeDisplayInfo }) => {
             <Row className="align-items-center">
               <Col xs={2} md={2} sm={2} lg={2} xl={2}>
                 <FontAwesomeIcon
-                  className="ml-1"
+                  className="d-inline-block w-100 ml-2"
                   size={"1x"}
                   color="white"
                   icon={faPlaneDeparture}
@@ -117,7 +117,7 @@ const SetFlightForm = ({ findFlight, airportData, closeDisplayInfo }) => {
             <Row className="align-items-center">
               <Col xs={2} md={2} sm={2} lg={2} xl={2}>
                 <FontAwesomeIcon
-                  className="ml-1"
+                  className="d-inline-block w-100 ml-2"
                   size={"1x"}
                   color="white"
                   icon={faPlaneArrival}
@@ -149,7 +149,7 @@ const SetFlightForm = ({ findFlight, airportData, closeDisplayInfo }) => {
                 </Row>
               </Col>
 
-              <Col xs={2} sm={2} md={2} lg={2} xl={2} />
+              <Col xs={2} sm={2} md={2} lg={2} xl={3} />
             </Row>
             <Row style={{ height: "80px" }} />
             <Row>
@@ -171,7 +171,7 @@ const SetFlightForm = ({ findFlight, airportData, closeDisplayInfo }) => {
             </Row>
           </Form>
         </Col>
-        <Col xs={2} sm={2} md={6} lg={4} />
+        <Col xs={1} sm={2} md={6} lg={4} xl={2} />
       </Row>
     </div>
   );

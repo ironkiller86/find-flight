@@ -5,11 +5,19 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url(./sfondo_1\ .jpg);
+  background-image: url("./sfondo_1 .jpg");
+  background-repeat: no-repeat;
   background-size: cover;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+/*
+*  x le immagini di background  100%
+*
+*/
+html {
+  min-height: 100%; /* enforce height */
 }
