@@ -17,7 +17,7 @@ import Row from 'react-bootstrap/Row';
  *
  */
 
-const SetFlightForm = ({ findFlight }) => {
+const SetFlightForm = ({ findFlight, airportData }) => {
     console.log('SetFlightForm - component')
     /*
      * 
@@ -90,14 +90,27 @@ const SetFlightForm = ({ findFlight }) => {
                         <Row>
                             <Col xs={3} md={2} />
                             <Col xs={6} md={8}>
+
                                 <Form.Control
                                     onChange={hanlderFormFields}
                                     className='text-center'
                                     required
-                                    placeholder={'Departure airport IATA code'}
                                     name='departureAirport'
-                                    value={departureAirport}
-                                />
+                                    as='select'
+                                >
+                                    <option value={''}>Select 'Departure airport IATA code</option>
+                                    {airportData.map((airport) => {
+                                        return (
+                                            <option
+                                                className='text-center'
+                                                key={airport.id}
+                                                value={airport.codeIata}
+                                            >
+                                                {airport.codeIata}
+                                            </option>
+                                        );
+                                    })}
+                                </Form.Control>
                             </Col>
                             <Col xs={3} md={2} />
                         </Row>
@@ -108,14 +121,26 @@ const SetFlightForm = ({ findFlight }) => {
                             <Col xs={3} md={2} />
                             <Col xs={6} md={8}>
                                 <Form.Control
-
                                     onChange={hanlderFormFields}
                                     className='text-center'
                                     required
-                                    placeholder={'Arrival airport IATA code'}
                                     name='arrivalAirport'
-                                    value={arrivalAirport}
-                                />
+                                    as='select'
+                                >
+
+                                    <option value={''}>Select 'Arrival airport IATA code</option>
+                                    {airportData.map((airport) => {
+                                        return (
+                                            <option
+                                                className='text-center'
+                                                key={airport.id}
+                                                value={airport.codeIata}
+                                            >
+                                                {airport.codeIata}
+                                            </option>
+                                        );
+                                    })}
+                                </Form.Control>
                             </Col>
                             <Col xs={3} md={2} />
                         </Row>
