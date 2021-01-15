@@ -116,9 +116,7 @@ const App = () => {
   return (
 
     <div style={{ marginTop: '5%', }}>
-      {loading ?
-        <MySpinner /> : null
-      }
+
       <>
         <SetFlightsForm
           airportData={airportData}
@@ -133,7 +131,9 @@ const App = () => {
             errorMsg=' Sorry an Error happed' /> :
           null}
       </>
-
+      {loading ?
+        <MySpinner /> : null
+      }
     </div>
   );
 }
