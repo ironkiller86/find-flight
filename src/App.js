@@ -81,7 +81,6 @@ const App = () => {
     }
     console.log(airlinesListResponse);
     const airlinesList = airlinesListResponse?.data?.data;
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>>", airlinesList);
     const airlineObj = airlinesList.find(
       (airline) => airline.id === bestFlight.airlineId
     );
