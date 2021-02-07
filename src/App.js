@@ -42,14 +42,13 @@ const App = () => {
     try {
       flightsData = await axios.request({ ...httpConfig });
     } catch (error) {
-      console.log(error);
+
       setAppData({ ...appData, variant: "danger", show: true });
       setLoading((loading) => !loading);
       return;
     }
     console.log("App - findFlight", flightsData);
     const flightsList = flightsData?.data?.data;
-    console.log(flightsList);
     let bestFlight = null;
     if (flightsList.length > 1) {
       bestFlight = flightsList.reduce((prev, curr) =>
@@ -75,11 +74,9 @@ const App = () => {
     try {
       airlinesListResponse = await axios.request({ ...httpConfig });
     } catch (error) {
-      console.log(error);
       setAppData({ ...appData, variant: "danger", show: true });
       return;
     }
-    console.log(airlinesListResponse);
     const airlinesList = airlinesListResponse?.data?.data;
     const airlineObj = airlinesList.find(
       (airline) => airline.id === bestFlight.airlineId
@@ -142,7 +139,6 @@ const App = () => {
         setAppData({ ...appData, airportData: [...airportListObj] });
         setLoading((loading) => !loading);
       } catch (error) {
-        console.log(error);
         setAppData({ ...appData, variant: "danger", show: true });
         setLoading((loading) => !loading);
         return;
